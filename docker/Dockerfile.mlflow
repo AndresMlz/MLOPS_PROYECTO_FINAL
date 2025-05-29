@@ -1,0 +1,17 @@
+FROM python:3.9-slim
+
+# Evitar interacciones en instalaciones
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Instala MLflow y dependencias
+RUN pip install --no-cache-dir mlflow boto3 psycopg2-binary
+
+# Crea directorio de trabajo
+WORKDIR /mlflow
+
+# Puerto que usará MLflow
+EXPOSE 5001
+
+# Comando base (los argumentos se completan en el manifiesto Kubernetes)
+ENTRYPOINT ["mlflow"]
+CMD ["server"]
