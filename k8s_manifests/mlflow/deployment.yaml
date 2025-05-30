@@ -18,8 +18,6 @@ spec:
           ports:
             - containerPort: 5001
           env:
-            - name: MLFLOW_TRACKING_URI
-              value: http://mlflow:5001
             - name: MLFLOW_S3_ENDPOINT_URL
               value: http://minio:9000
             - name: AWS_ACCESS_KEY_ID
@@ -32,12 +30,13 @@ spec:
                 configMapKeyRef:
                   name: global-env
                   key: MINIO_SECRET_KEY
-          command: ["mlflow", "server"]
+          command: ["mlflow"]
           args:
-            - "--backend-store-uri=postgresql://mlflow:mlflow123@postgres:5432/mlflow"
-            - "--default-artifact-root=s3://mlflow/"
+            - server
             - "--host=0.0.0.0"
             - "--port=5001"
+            - "--backend-store-uri=postgresql://mlflow:mlflow123@postgres:5432/mlflow"
+            - "--default-artifact-root=s3://mlflow/"
           volumeMounts:
             - name: mlflow-storage
               mountPath: /mlflow

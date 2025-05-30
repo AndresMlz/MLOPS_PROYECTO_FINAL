@@ -1,0 +1,28 @@
+containers:
+  - name: fastapi
+    image: andrsmlz/fastapi:latest
+    ports:
+      - containerPort: 5000
+    env:
+      - name: MLFLOW_TRACKING_URI
+        value: http://mlflow:5001
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+      limits:
+        memory: "256Mi"
+        cpu: "250m"
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: 5000
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /health
+        port: 5000
+      initialDelaySeconds: 2
+      periodSeconds: 5
+
